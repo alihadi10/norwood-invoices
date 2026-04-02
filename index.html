@@ -1,186 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Norwood Invoice Uploader — WHP</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root{--espresso:#3D2314;--espresso-light:#5C3D2E;--blush:#EDD0D0;--blush-dark:#D9A8A8;--cream:#FAF5EF;--cream-dark:#F0E8DE;--white:#ffffff;--success:#276221;--success-bg:#C6EFCE;--error:#9C0006;--error-bg:#FFC7CE;--amber:#9C6500;--amber-bg:#FFEB9C;--text:#1a1a1a;--text-muted:#666;--border:#e0d5cc}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
-.header{background:var(--espresso);padding:0;position:relative;overflow:hidden}
-.header::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(237,208,208,0.08)}
-.header-inner{padding:32px 28px 28px;position:relative;z-index:1}
-.header-eyebrow{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush-dark);margin-bottom:8px}
-.header-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--white);line-height:1.2;margin-bottom:6px}
-.header-sub{font-size:12px;color:var(--blush-dark);font-weight:300}
-.main{padding:24px 20px 60px;max-width:520px;margin:0 auto}
-.card{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:20px;margin-bottom:16px}
-.card-label{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
-.setup-note{font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.6}
-.setup-note a{color:var(--espresso)}
-.input-row{display:flex;gap:8px}
-input[type=text],input[type=password]{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);outline:none;transition:border-color 0.2s}
-input[type=text]:focus,input[type=password]:focus{border-color:var(--espresso)}
-.btn-small{padding:10px 16px;background:var(--espresso);color:var(--white);border:none;border-radius:10px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif}
-.saved-badge{font-size:11px;color:var(--success);margin-top:6px;display:none}
-.drop-zone{border:1.5px dashed var(--blush-dark);border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--cream);position:relative}
-.drop-zone:hover,.drop-zone.drag-over{border-color:var(--espresso);background:#f5ede6}
-.drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
-.drop-icon{width:48px;height:48px;background:var(--blush);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:22px}
-.drop-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--espresso);margin-bottom:4px}
-.drop-sub{font-size:12px;color:var(--text-muted)}
-.btn-main{width:100%;padding:15px 24px;background:var(--espresso);color:var(--white);border:none;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:12px;transition:background 0.2s,transform 0.1s;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-main:hover{background:var(--espresso-light)}
-.btn-main:active{transform:scale(0.98)}
-.btn-main:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-.progress-steps{display:flex;flex-direction:column;gap:0}
-.step-item{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid var(--cream-dark)}
-.step-item:last-child{border-bottom:none}
-.step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;transition:all 0.3s}
-.step-pending{background:var(--cream-dark);color:var(--text-muted)}
-.step-active{background:var(--blush);color:var(--espresso)}
-.step-done{background:var(--success-bg);color:var(--success)}
-.step-error{background:var(--error-bg);color:var(--error)}
-.step-label{font-size:13px;color:var(--text-muted);padding-top:4px;transition:color 0.3s}
-.step-label.active{color:var(--text);font-weight:500}
-.step-label.done{color:var(--success)}
-.step-label.error{color:var(--error)}
-.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block}
-@keyframes spin{to{transform:rotate(360deg)}}
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.s-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:2px}
-.s-value{font-size:14px;font-weight:500;color:var(--espresso)}
-.amount-highlight{background:var(--cream);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border:1px solid var(--border)}
-.amount-label{font-size:12px;color:var(--text-muted)}
-.amount-value{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--espresso)}
-.banner{border-radius:10px;padding:14px 16px;font-size:13px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px}
-.banner-success{background:var(--success-bg);color:var(--success)}
-.banner-error{background:var(--error-bg);color:var(--error)}
-.banner-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.notes-box{background:var(--cream);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-muted);line-height:1.7;border:1px solid var(--border);margin-bottom:14px}
-.notes-box strong{color:var(--espresso)}
-.btn-reset{width:100%;padding:13px;background:transparent;color:var(--espresso);border:1px solid var(--border);border-radius:12px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
-.hidden{display:none!important}
-@media(max-width:400px){.header-title{font-size:24px}.summary-grid{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<div class="header">
-  <div class="header-inner">
-    <div class="header-eyebrow">Women's Health Plus — Norwood Fitout</div>
-    <div class="header-title">Invoice Uploader</div>
-    <div class="header-sub">Upload a PDF — auto-extracts and saves to your Google Sheet</div>
-  </div>
-</div>
-<div class="main">
-  <div class="card" id="api-card">
-    <div class="card-label">Anthropic API Key</div>
-    <div class="setup-note">Get your key from <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys. Stored only in your browser.</div>
-    <div class="input-row">
-      <input type="password" id="api-key-input" placeholder="sk-ant-...">
-      <button class="btn-small" onclick="saveApiKey()">Save</button>
-    </div>
-    <div class="saved-badge" id="api-saved">✓ API key saved</div>
-  </div>
-  <div class="card" id="upload-card">
-    <div class="card-label">Upload invoice PDF</div>
-    <div class="drop-zone" id="drop-zone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
-      <input type="file" accept="application/pdf" id="file-input" onchange="handleFileSelect(event)">
-      <div class="drop-icon">📄</div>
-      <div class="drop-title" id="drop-title">Drop PDF here</div>
-      <div class="drop-sub" id="drop-sub">or tap to browse</div>
-    </div>
-    <button class="btn-main" id="upload-btn" onclick="processInvoice()" disabled>Upload & save to Google Sheet</button>
-  </div>
-  <div class="card hidden" id="progress-card">
-    <div class="card-label">Processing</div>
-    <div class="progress-steps">
-      <div class="step-item"><div class="step-circle step-pending" id="s1-circle">1</div><div class="step-label" id="s1-label">Reading PDF with Claude</div></div>
-      <div class="step-item"><div class="step-circle step-pending" id="s2-circle">2</div><div class="step-label" id="s2-label">Extracting invoice data</div></div>
-      <div class="step-item"><div class="step-circle step-pending" id="s3-circle">3</div><div class="step-label" id="s3-label">Saving to Google Sheet</div></div>
-    </div>
-  </div>
-  <div class="card hidden" id="success-card">
-    <div class="banner banner-success"><span class="banner-icon">✓</span><span>Saved to your Google Sheet</span></div>
-    <div class="amount-highlight">
-      <div><div class="amount-label">Total inc. GST</div><div class="amount-value" id="result-total">—</div></div>
-      <div style="text-align:right"><div class="amount-label">Invoice type</div><div style="font-size:13px;font-weight:500;color:var(--espresso)" id="result-type">—</div></div>
-    </div>
-    <div class="summary-grid" id="result-grid"></div>
-    <div class="notes-box" id="result-notes" style="display:none"></div>
-    <button class="btn-reset" onclick="resetAll()">Upload another invoice</button>
-  </div>
-  <div class="card hidden" id="error-card">
-    <div class="banner banner-error"><span class="banner-icon">✕</span><span id="error-msg">Something went wrong.</span></div>
-    <button class="btn-reset" onclick="resetAll()">Try again</button>
-  </div>
-</div>
-<script>
-const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbwHSQGHb7CZZt1E0UWkMZFP46B_82Lr7t8ZTM8PdwzfO6lpYzd5sK9AYLbC-1M2wd2Rfw/exec';
-const API_KEY_STORE='whp_anthropic_key';
-const TRADES=['Asbestos Encapsulation','Demolition / Strip-out','Sauna Supply & Install','Joinery','Rubber Flooring','French Wash Wall Finish','Electrical','Plumbing','Air Conditioning / HVAC','Painting','IT / AV / Data Cabling','Signage','Furniture & FF&E','Cleaning (Pre-opening)','Acoustic Ceiling / Linings','Contingency','Professional Fees','Other'];
-let currentFile=null;
-const storedKey=localStorage.getItem(API_KEY_STORE);
-if(storedKey){document.getElementById('api-key-input').value=storedKey;document.getElementById('api-saved').style.display='block';}
-function saveApiKey(){const k=document.getElementById('api-key-input').value.trim();if(!k)return;localStorage.setItem(API_KEY_STORE,k);document.getElementById('api-saved').style.display='block';}
-function getApiKey(){return localStorage.getItem(API_KEY_STORE)||document.getElementById('api-key-input').value.trim();}
-function handleDragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('drag-over');}
-function handleDragLeave(){document.getElementById('drop-zone').classList.remove('drag-over');}
-function handleDrop(e){e.preventDefault();document.getElementById('drop-zone').classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f&&f.type==='application/pdf')setFile(f);else alert('Please upload a PDF file.');}
-function handleFileSelect(e){if(e.target.files[0])setFile(e.target.files[0]);}
-function setFile(f){currentFile=f;document.getElementById('drop-title').textContent=f.name;document.getElementById('drop-sub').textContent=(f.size/1024).toFixed(0)+' KB';document.getElementById('upload-btn').disabled=false;}
-function toBase64(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej(new Error('Failed to read file'));r.readAsDataURL(f);});}
-function setStep(n,state,text){const circle=document.getElementById('s'+n+'-circle');const label=document.getElementById('s'+n+'-label');circle.className='step-circle step-'+state;circle.textContent=state==='done'?'✓':state==='error'?'✕':state==='active'?'…':n;label.className='step-label '+(state==='active'?'active':state==='done'?'done':state==='error'?'error':'');if(text)label.textContent=text;}
-function show(id){document.getElementById(id).classList.remove('hidden');}
-function hide(id){document.getElementById(id).classList.add('hidden');}
-async function processInvoice(){
-  const apiKey=getApiKey();
-  if(!apiKey){alert('Please enter your Anthropic API key first.');return;}
-  if(!currentFile)return;
-  localStorage.setItem(API_KEY_STORE,apiKey);
-  hide('upload-card');show('progress-card');
-  setStep(1,'active','Reading PDF with Claude…');
-  try{
-    const base64=await toBase64(currentFile);
-    setStep(1,'done','PDF read successfully');
-    setStep(2,'active','Extracting invoice data…');
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:1000,
-        system:`You extract invoice data for the Norwood Women's Wellbeing Centre fitout in Adelaide. Return ONLY valid JSON, no markdown, no backticks. Structure: {"company":"string","trade":"best match from: ${TRADES.join(', ')}","invoice_number":"string or null","invoice_date":"DD/MM/YYYY or null","due_date":"DD/MM/YYYY or null","amount_ex_gst":number_or_null,"gst_amount":number_or_null,"amount_inc_gst":number_or_null,"invoice_type":"Quote or Deposit or Progress Claim or Final Invoice or Other","description":"brief description","notes":"deposit requirements, exclusions, conditions or null"}`,
-        messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:'Extract invoice data. Return only JSON.'}]}]
-      })
-    });
-    if(!resp.ok){const err=await resp.json();throw new Error(err.error?.message||'Claude API error '+resp.status);}
-    const data=await resp.json();
-    const raw=data.content.find(b=>b.type==='text')?.text||'';
-    const invoice=JSON.parse(raw.replace(/```json|```/g,'').trim());
-    setStep(2,'done','Invoice data extracted');
-    setStep(3,'active','Saving to Google Sheet…');
-    const payload={date:invoice.invoice_date||'',company:invoice.company||'',trade:invoice.trade||'',invoice_number:invoice.invoice_number||'',invoice_type:invoice.invoice_type||'',amount_ex_gst:invoice.amount_ex_gst||0,gst_amount:invoice.gst_amount||0,amount_inc_gst:invoice.amount_inc_gst||0,due_date:invoice.due_date||'',description:invoice.description||'',notes:invoice.notes||'',added_on:new Date().toLocaleDateString('en-AU')};
-    const sheetResp=await fetch(APPS_SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
-    const sheetResult=await sheetResp.json();
-    if(sheetResult.status!=='success')throw new Error(sheetResult.message||'Sheet error');
-    setStep(3,'done','Saved to Google Sheet');
-    setTimeout(()=>{
-      hide('progress-card');show('success-card');
-      const fmt=n=>n?'$'+Number(n).toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
-      document.getElementById('result-total').textContent=fmt(invoice.amount_inc_gst);
-      document.getElementById('result-type').textContent=invoice.invoice_type||'—';
-      const items=[['Company',invoice.company],['Trade',invoice.trade],['Invoice #',invoice.invoice_number],['Date',invoice.invoice_date],['Ex. GST',fmt(invoice.amount_ex_gst)],['GST',fmt(invoice.gst_amount)]];
-      document.getElementById('result-grid').innerHTML=items.map(([k,v])=>`<div><div class="s-label">${k}</div><div class="s-value">${v||'—'}</div></div>`).join('');
-      if(invoice.notes){const nb=document.getElementById('result-notes');nb.innerHTML='<strong>Notes:</strong> '+invoice.notes;nb.style.display='block';}
-    },600);
-  }catch(err){
-    hide('progress-card');show('error-card');
-    document.getElementById('error-msg').textContent='Error: '+err.message;
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var action = data.action || 'upsert_trade';
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    if (action === 'upsert_trade') {
+      var sheet = ss.getSheetByName('🔧 Trade Register');
+      if (!sheet) throw new Error('Trade Register sheet not found');
+      var rows = sheet.getDataRange().getValues();
+      var matchRow = -1;
+      for (var r = 1; r < rows.length; r++) {
+        var tradeName = String(rows[r][1]).toLowerCase();
+        var incomingTrade = String(data.trade || '').toLowerCase();
+        if (tradeName.length > 0 && incomingTrade.length > 0) {
+          var tradeShort = tradeName.substring(0, 6);
+          var incomingShort = incomingTrade.substring(0, 6);
+          if (tradeName.indexOf(incomingShort) > -1 || incomingTrade.indexOf(tradeShort) > -1) {
+            matchRow = r + 1;
+            break;
+          }
+        }
+      }
+      if (matchRow > 0) {
+        if (data.company) sheet.getRange(matchRow, 3).setValue(data.company);
+        if (data.contact) sheet.getRange(matchRow, 4).setValue(data.contact);
+        if (data.phone) sheet.getRange(matchRow, 5).setValue(data.phone);
+        if (data.email) sheet.getRange(matchRow, 6).setValue(data.email);
+        if (data.status) sheet.getRange(matchRow, 7).setValue(data.status);
+        if (data.date) sheet.getRange(matchRow, 8).setValue(data.date);
+        sheet.getRange(matchRow, 9).setValue('Yes');
+        if (data.amount_inc_gst) sheet.getRange(matchRow, 10).setValue(data.amount_inc_gst);
+        sheet.getRange(matchRow, 11).setValue('Y');
+        if (data.notes) sheet.getRange(matchRow, 14).setValue(data.notes);
+        return ok('Trade Register updated — ' + data.trade);
+      } else {
+        var nextNum = rows.length;
+        sheet.appendRow([
+          nextNum,
+          data.trade || '',
+          data.company || '',
+          data.contact || '',
+          data.phone || '',
+          data.email || '',
+          data.status || 'Quote Received',
+          data.date || '',
+          'Yes',
+          data.amount_inc_gst || '',
+          'Y',
+          'No',
+          'No',
+          data.notes || ''
+        ]);
+        return ok('New trade added — ' + data.trade);
+      }
+    }
+
+    if (action === 'update_cell') {
+      var sheet2 = ss.getSheetByName(data.sheet);
+      if (!sheet2) throw new Error('Sheet not found: ' + data.sheet);
+      sheet2.getRange(data.row, data.col).setValue(data.value);
+      return ok('Cell updated');
+    }
+
+    if (action === 'append_row') {
+      var sheet3 = ss.getSheetByName(data.sheet);
+      if (!sheet3) throw new Error('Sheet not found: ' + data.sheet);
+      sheet3.appendRow(data.values);
+      return ok('Row appended');
+    }
+
+    if (action === 'read_sheet') {
+      var sheet4 = ss.getSheetByName(data.sheet);
+      if (!sheet4) throw new Error('Sheet not found: ' + data.sheet);
+      var values = sheet4.getDataRange().getValues();
+      return ContentService
+        .createTextOutput(JSON.stringify({ status: 'success', data: values }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (action === 'find_and_update') {
+      var sheet5 = ss.getSheetByName(data.sheet);
+      if (!sheet5) throw new Error('Sheet not found: ' + data.sheet);
+      var vals = sheet5.getDataRange().getValues();
+      for (var i = 0; i < vals.length; i++) {
+        if (String(vals[i][data.search_col - 1]).toLowerCase().indexOf(data.search_value.toLowerCase()) > -1) {
+          sheet5.getRange(i + 1, data.update_col).setValue(data.update_value);
+          return ok('Row ' + (i + 1) + ' updated');
+        }
+      }
+      throw new Error('Value not found: ' + data.search_value);
+    }
+
+    if (action === 'list_sheets') {
+      var names = ss.getSheets().map(function(s) { return s.getName(); });
+      return ContentService
+        .createTextOutput(JSON.stringify({ status: 'success', sheets: names }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    throw new Error('Unknown action: ' + action);
+
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 }
-function resetAll(){currentFile=null;document.getElementById('drop-title').textContent='Drop PDF here';document.getElementById('drop-sub').textContent='or tap to browse';document.getElementById('upload-btn').disabled=true;document.getElementById('file-input').value='';document.getElementById('result-notes').style.display='none';setStep(1,'pending','Reading PDF with Claude');setStep(2,'pending','Extracting invoice data');setStep(3,'pending','Saving to Google Sheet');hide('success-card');hide('error-card');hide('progress-card');show('upload-card');}
-</script>
-</body>
-</html>
+
+function doGet(e) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var action = e.parameter.action || 'list_sheets';
+    if (action === 'list_sheets') {
+      var names = ss.getSheets().map(function(s) { return s.getName(); });
+      return ContentService
+        .createTextOutput(JSON.stringify({ status: 'success', sheets: names }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    if (action === 'read_sheet') {
+      var sheet = ss.getSheetByName(e.parameter.sheet);
+      if (!sheet) throw new Error('Sheet not found');
+      var values = sheet.getDataRange().getValues();
+      return ContentService
+        .createTextOutput(JSON.stringify({ status: 'success', data: values }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function ok(msg) {
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: 'success', message: msg }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
