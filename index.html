@@ -7,174 +7,155 @@
 <title>Norwood Invoice Uploader</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--espresso:#3D2314;--blush:#EDD0D0;--blush-dark:#D9A8A8;--cream:#FAF5EF;--cream-dark:#F0E8DE;--white:#ffffff;--success:#276221;--success-bg:#C6EFCE;--error:#9C0006;--error-bg:#FFC7CE;--text:#1a1a1a;--text-muted:#666;--border:#e0d5cc}
+:root{--espresso:#3D2314;--blush:#EDD0D0;--blush-dark:#D9A8A8;--cream:#FAF5EF;--cream-dark:#F0E8DE;--white:#fff;--success:#276221;--success-bg:#C6EFCE;--error:#9C0006;--error-bg:#FFC7CE;--text:#1a1a1a;--text-muted:#666;--border:#e0d5cc}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
-.header{background:var(--espresso);padding:28px 24px 22px}
+.hdr{background:var(--espresso);padding:28px 24px 22px}
 .eyebrow{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--blush-dark);margin-bottom:6px}
-.title{font-size:24px;font-weight:400;color:var(--white);margin-bottom:4px}
-.subtitle{font-size:12px;color:var(--blush-dark)}
+.htitle{font-size:24px;font-weight:400;color:var(--white);margin-bottom:4px}
+.hsub{font-size:12px;color:var(--blush-dark)}
 .main{padding:20px;max-width:500px;margin:0 auto}
 .card{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:18px;margin-bottom:14px}
-.label{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.clabel{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
 .note{font-size:12px;color:var(--text-muted);margin-bottom:8px;line-height:1.5}
 .note a{color:var(--espresso)}
-.row{display:flex;gap:8px}
+.irow{display:flex;gap:8px}
 input[type=password]{flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--cream);color:var(--text);outline:none}
-.btn-sm{padding:9px 14px;background:var(--espresso);color:var(--white);border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer}
+.bsm{padding:9px 14px;background:var(--espresso);color:var(--white);border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer}
 .saved{font-size:11px;color:var(--success);margin-top:5px;display:none}
 .drop{border:1.5px dashed var(--blush-dark);border-radius:12px;padding:32px 16px;text-align:center;cursor:pointer;background:var(--cream);position:relative;transition:all 0.2s}
 .drop:hover{border-color:var(--espresso);background:#f5ede6}
 .drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
-.drop-icon{font-size:28px;margin-bottom:10px}
-.drop-title{font-size:16px;font-weight:500;color:var(--espresso);margin-bottom:3px}
-.drop-sub{font-size:12px;color:var(--text-muted)}
-.btn-main{width:100%;padding:13px;background:var(--espresso);color:var(--white);border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;margin-top:10px}
-.btn-main:disabled{opacity:0.4;cursor:not-allowed}
+.dicon{font-size:13px;font-weight:600;color:var(--blush-dark);margin-bottom:10px;letter-spacing:0.1em}
+.dtitle{font-size:16px;font-weight:500;color:var(--espresso);margin-bottom:3px}
+.dsub{font-size:12px;color:var(--text-muted)}
+.bmain{width:100%;padding:13px;background:var(--espresso);color:var(--white);border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;margin-top:10px}
+.bmain:disabled{opacity:0.4;cursor:not-allowed}
 .steps{display:flex;flex-direction:column}
-.step{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--cream-dark)}
-.step:last-child{border-bottom:none}
-.circle{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
-.pending{background:var(--cream-dark);color:var(--text-muted)}
-.active{background:var(--blush);color:var(--espresso)}
+.sitem{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--cream-dark)}
+.sitem:last-child{border-bottom:none}
+.circ{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
+.pend{background:var(--cream-dark);color:var(--text-muted)}
+.actv{background:var(--blush);color:var(--espresso)}
 .done{background:var(--success-bg);color:var(--success)}
-.err{background:var(--error-bg);color:var(--error)}
-.slabel{font-size:13px;color:var(--text-muted)}
-.slabel.active{color:var(--text);font-weight:500}
-.slabel.done{color:var(--success)}
-.slabel.err{color:var(--error)}
+.errr{background:var(--error-bg);color:var(--error)}
+.slbl{font-size:13px;color:var(--text-muted)}
+.slbl.actv{color:var(--text);font-weight:500}
+.slbl.done{color:var(--success)}
+.slbl.errr{color:var(--error)}
 .banner{border-radius:8px;padding:12px 14px;font-size:13px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.ok{background:var(--success-bg);color:var(--success)}
-.fail{background:var(--error-bg);color:var(--error)}
-.amount-box{background:var(--cream);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;margin-bottom:12px;border:1px solid var(--border)}
-.alabel{font-size:11px;color:var(--text-muted)}
+.bok{background:var(--success-bg);color:var(--success)}
+.berr{background:var(--error-bg);color:var(--error)}
+.abox{background:var(--cream);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;margin-bottom:12px;border:1px solid var(--border)}
+.albl{font-size:11px;color:var(--text-muted)}
 .aval{font-size:20px;font-weight:500;color:var(--espresso)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .gl{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:2px}
-.gv{font-size:13px;font-weight:500;color:var(--espresso)}
-.trade-tag{background:var(--cream);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--espresso);font-weight:500;margin-bottom:10px;border:1px solid var(--border)}
-.notes{background:var(--cream);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text-muted);line-height:1.6;border:1px solid var(--border);margin-bottom:10px}
-.btn-reset{width:100%;padding:11px;background:transparent;color:var(--espresso);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;margin-top:6px}
+.gv{font-size:13px;font-weight:500;color:var(--espresso);word-break:break-all}
+.notebox{background:var(--cream);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text-muted);line-height:1.6;border:1px solid var(--border);margin-bottom:10px}
+.breset{width:100%;padding:11px;background:transparent;color:var(--espresso);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;margin-top:6px}
 .hidden{display:none!important}
 </style>
 </head>
 <body>
-<div class="header">
+<div class="hdr">
   <div class="eyebrow">Women's Health Plus - Norwood Fitout</div>
-  <div class="title">Invoice Uploader</div>
-  <div class="subtitle">Upload a PDF - auto-fills your Trade Register</div>
+  <div class="htitle">Invoice Uploader</div>
+  <div class="hsub">Upload a PDF - saves automatically to your Invoices sheet</div>
 </div>
 <div class="main">
 
   <div class="card" id="api-card">
-    <div class="label">Anthropic API Key</div>
-    <div class="note">Get your key from <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> - API Keys. Saved in your browser only.</div>
-    <div class="row">
+    <div class="clabel">Anthropic API Key</div>
+    <div class="note">Get your key from <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> then API Keys. Saved in your browser only.</div>
+    <div class="irow">
       <input type="password" id="api-input" placeholder="sk-ant-...">
-      <button class="btn-sm" onclick="saveKey()">Save</button>
+      <button class="bsm" onclick="saveKey()">Save</button>
     </div>
-    <div class="saved" id="key-saved">Key saved</div>
+    <div class="saved" id="key-saved">API key saved</div>
   </div>
 
   <div class="card" id="upload-card">
-    <div class="label">Upload Quote or Invoice PDF</div>
-    <div class="drop" id="drop" ondrop="onDrop(event)" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)">
-      <input type="file" accept="application/pdf" id="file-input" onchange="onFileSelect(event)">
-      <div class="drop-icon">PDF</div>
-      <div class="drop-title" id="drop-title">Drop PDF here</div>
-      <div class="drop-sub" id="drop-sub">or tap to browse</div>
+    <div class="clabel">Upload Invoice or Quote PDF</div>
+    <div class="drop" id="drop" ondrop="onDrop(event)" ondragover="onOver(event)" ondragleave="onLeave(event)">
+      <input type="file" accept="application/pdf" id="finput" onchange="onPick(event)">
+      <div class="dicon">PDF</div>
+      <div class="dtitle" id="dtitle">Drop PDF here</div>
+      <div class="dsub" id="dsub">or tap to browse</div>
     </div>
-    <button class="btn-main" id="go-btn" onclick="run()" disabled>Upload and update Trade Register</button>
+    <button class="bmain" id="gobtn" onclick="run()" disabled>Upload and save to Invoices sheet</button>
   </div>
 
-  <div class="card hidden" id="progress-card">
-    <div class="label">Processing</div>
+  <div class="card hidden" id="prog-card">
+    <div class="clabel">Processing</div>
     <div class="steps">
-      <div class="step"><div class="circle pending" id="c1">1</div><div class="slabel" id="l1">Reading PDF with Claude</div></div>
-      <div class="step"><div class="circle pending" id="c2">2</div><div class="slabel" id="l2">Extracting trade and contact details</div></div>
-      <div class="step"><div class="circle pending" id="c3">3</div><div class="slabel" id="l3">Updating Trade Register</div></div>
+      <div class="sitem"><div class="circ pend" id="c1">1</div><div class="slbl" id="l1">Reading PDF with Claude</div></div>
+      <div class="sitem"><div class="circ pend" id="c2">2</div><div class="slbl" id="l2">Extracting invoice data</div></div>
+      <div class="sitem"><div class="circ pend" id="c3">3</div><div class="slbl" id="l3">Saving to Invoices sheet</div></div>
     </div>
   </div>
 
   <div class="card hidden" id="ok-card">
-    <div class="banner ok" id="ok-msg">Trade Register updated</div>
-    <div class="trade-tag" id="trade-tag"></div>
-    <div class="amount-box">
-      <div><div class="alabel">Total inc GST</div><div class="aval" id="r-total">-</div></div>
-      <div style="text-align:right"><div class="alabel">Type</div><div style="font-size:13px;font-weight:500;color:var(--espresso)" id="r-type">-</div></div>
+    <div class="banner bok">Invoice saved to your Google Sheet</div>
+    <div class="abox">
+      <div><div class="albl">Total inc GST</div><div class="aval" id="r-total">-</div></div>
+      <div style="text-align:right"><div class="albl">Type</div><div style="font-size:13px;font-weight:500;color:var(--espresso)" id="r-type">-</div></div>
     </div>
-    <div class="grid" id="r-grid"></div>
-    <div class="notes hidden" id="r-notes"></div>
-    <button class="btn-reset" onclick="reset()">Upload another</button>
+    <div class="sgrid" id="r-grid"></div>
+    <div class="notebox hidden" id="r-notes"></div>
+    <button class="breset" onclick="reset()">Upload another invoice</button>
   </div>
 
   <div class="card hidden" id="err-card">
-    <div class="banner fail"><span id="err-msg">Something went wrong.</span></div>
-    <button class="btn-reset" onclick="reset()">Try again</button>
+    <div class="banner berr"><span id="errmsg">Something went wrong.</span></div>
+    <button class="breset" onclick="reset()">Try again</button>
   </div>
 
 </div>
 <script>
-var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHSQGHb7CZZt1E0UWkMZFP46B_82Lr7t8ZTM8PdwzfO6lpYzd5sK9AYLbC-1M2wd2Rfw/exec';
-var KEY_STORE = 'whp_key';
-var TRADES = 'Asbestos Encapsulation,Demolition / Strip-out,Sauna Supply and Install,Joinery,Rubber Flooring,French Wash Wall Finish,Electrical,Plumbing,Air Conditioning / HVAC,Painting,IT / AV / Data Cabling,Signage,Furniture and FF&E,Cleaning Pre-opening,Acoustic Ceiling / Linings,Contingency,Professional Fees,Other';
-var currentFile = null;
+var SURL = 'https://script.google.com/macros/s/AKfycbwHSQGHb7CZZt1E0UWkMZFP46B_82Lr7t8ZTM8PdwzfO6lpYzd5sK9AYLbC-1M2wd2Rfw/exec';
+var KSTORE = 'whp_key_v3';
+var TRADES = 'Asbestos Encapsulation,Demolition Strip-out,Sauna Supply and Install,Joinery,Rubber Flooring,French Wash Wall Finish,Electrical,Plumbing,Air Conditioning HVAC,Painting,IT AV Data Cabling,Signage,Furniture FF&E,Cleaning Pre-opening,Acoustic Ceiling Linings,Contingency,Professional Fees,Other';
+var file = null;
 
-var sk = localStorage.getItem(KEY_STORE);
+var sk = localStorage.getItem(KSTORE);
 if (sk) { document.getElementById('api-input').value = sk; document.getElementById('key-saved').style.display = 'block'; }
 
-function saveKey() {
-  var k = document.getElementById('api-input').value.trim();
-  if (!k) return;
-  localStorage.setItem(KEY_STORE, k);
-  document.getElementById('key-saved').style.display = 'block';
-}
-
-function getKey() { return localStorage.getItem(KEY_STORE) || document.getElementById('api-input').value.trim(); }
-
-function onDragOver(e) { e.preventDefault(); document.getElementById('drop').style.borderColor = '#3D2314'; }
-function onDragLeave() { document.getElementById('drop').style.borderColor = '#D9A8A8'; }
-function onDrop(e) { e.preventDefault(); onDragLeave(); var f = e.dataTransfer.files[0]; if (f && f.type === 'application/pdf') setFile(f); else alert('Please upload a PDF.'); }
-function onFileSelect(e) { if (e.target.files[0]) setFile(e.target.files[0]); }
-function setFile(f) { currentFile = f; document.getElementById('drop-title').textContent = f.name; document.getElementById('drop-sub').textContent = Math.round(f.size/1024) + ' KB'; document.getElementById('go-btn').disabled = false; }
-
-function b64(f) {
-  return new Promise(function(res, rej) {
-    var r = new FileReader();
-    r.onload = function() { res(r.result.split(',')[1]); };
-    r.onerror = function() { rej(new Error('Could not read file')); };
-    r.readAsDataURL(f);
-  });
-}
-
-function step(n, state, txt) {
-  var c = document.getElementById('c' + n);
-  var l = document.getElementById('l' + n);
-  c.className = 'circle ' + state;
-  c.textContent = state === 'done' ? 'OK' : state === 'err' ? 'X' : state === 'active' ? '...' : n;
-  l.className = 'slabel ' + (state === 'active' ? 'active' : state === 'done' ? 'done' : state === 'err' ? 'err' : '');
-  if (txt) l.textContent = txt;
-}
-
+function saveKey() { var k = document.getElementById('api-input').value.trim(); if (!k) return; localStorage.setItem(KSTORE, k); document.getElementById('key-saved').style.display = 'block'; }
+function getKey() { return localStorage.getItem(KSTORE) || document.getElementById('api-input').value.trim(); }
+function onOver(e) { e.preventDefault(); document.getElementById('drop').style.borderColor = '#3D2314'; }
+function onLeave() { document.getElementById('drop').style.borderColor = '#D9A8A8'; }
+function onDrop(e) { e.preventDefault(); onLeave(); var f = e.dataTransfer.files[0]; if (f && f.type === 'application/pdf') setFile(f); else alert('Please upload a PDF.'); }
+function onPick(e) { if (e.target.files[0]) setFile(e.target.files[0]); }
+function setFile(f) { file = f; document.getElementById('dtitle').textContent = f.name; document.getElementById('dsub').textContent = Math.round(f.size/1024) + ' KB'; document.getElementById('gobtn').disabled = false; }
+function b64(f) { return new Promise(function(res,rej){ var r=new FileReader(); r.onload=function(){ res(r.result.split(',')[1]); }; r.onerror=function(){ rej(new Error('Read failed')); }; r.readAsDataURL(f); }); }
 function show(id) { document.getElementById(id).classList.remove('hidden'); }
 function hide(id) { document.getElementById(id).classList.add('hidden'); }
+function fmt(n) { return n ? '$'+Number(n).toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2}) : '-'; }
 
-function fmt(n) { return n ? '$' + Number(n).toLocaleString('en-AU', {minimumFractionDigits:2, maximumFractionDigits:2}) : '-'; }
+function setstep(n, state, txt) {
+  var c = document.getElementById('c'+n);
+  var l = document.getElementById('l'+n);
+  c.className = 'circ ' + state;
+  c.textContent = state==='done' ? 'OK' : state==='errr' ? 'X' : state==='actv' ? '...' : String(n);
+  l.className = 'slbl ' + state;
+  if (txt) l.textContent = txt;
+}
 
 async function run() {
   var key = getKey();
   if (!key) { alert('Please enter your Anthropic API key first.'); return; }
-  if (!currentFile) return;
-  localStorage.setItem(KEY_STORE, key);
+  if (!file) return;
+  localStorage.setItem(KSTORE, key);
   hide('upload-card');
-  show('progress-card');
-  step(1, 'active', 'Reading PDF with Claude...');
+  show('prog-card');
+  setstep(1,'actv','Reading PDF with Claude...');
   try {
-    var base64 = await b64(currentFile);
-    step(1, 'done', 'PDF read');
-    step(2, 'active', 'Extracting details...');
+    var base64 = await b64(file);
+    setstep(1,'done','PDF read successfully');
+    setstep(2,'actv','Extracting invoice data...');
 
-    var sysPrompt = 'You extract data from construction quotes and invoices for the Norwood Womens Wellbeing Centre fitout in Adelaide. Return ONLY valid JSON with no markdown and no backticks. Fields: company (string), contact (string or null), phone (string or null), email (string or null), trade (best match from: ' + TRADES + '), invoice_number (string or null), invoice_date (DD/MM/YYYY or null), due_date (DD/MM/YYYY or null), amount_ex_gst (number or null), gst_amount (number or null), amount_inc_gst (number or null), invoice_type (Quote or Deposit or Progress Claim or Final Invoice or Other), description (string), notes (string or null), status (always Quote Received).';
+    var sys = 'You extract data from construction invoices and quotes for the Norwood Womens Wellbeing Centre fitout project in Adelaide, Australia. Return ONLY a valid JSON object with no markdown formatting and no code blocks. The JSON must have these exact fields: company (string - supplier name), trade (string - best match from this list: ' + TRADES + '), invoice_number (string or null), invoice_date (string in DD/MM/YYYY format or null), due_date (string in DD/MM/YYYY format or null), amount_ex_gst (number or null), gst_amount (number or null), amount_inc_gst (number or null), invoice_type (one of: Quote, Deposit, Progress Claim, Final Invoice, Other), description (string - brief summary of works), notes (string - any important conditions, exclusions, deposit requirements or null).';
 
     var resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -187,80 +168,72 @@ async function run() {
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
-        system: sysPrompt,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } },
-            { type: 'text', text: 'Extract all data including contact details. Return only JSON.' }
-          ]
-        }]
+        system: sys,
+        messages: [{ role: 'user', content: [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } },
+          { type: 'text', text: 'Extract the invoice data and return only the JSON object.' }
+        ]}]
       })
     });
 
-    if (!resp.ok) { var e = await resp.json(); throw new Error(e.error ? e.error.message : 'API error ' + resp.status); }
-    var data = await resp.json();
+    if (!resp.ok) { var er = await resp.json(); throw new Error(er.error ? er.error.message : 'API error ' + resp.status); }
+    var rdata = await resp.json();
     var raw = '';
-    for (var i = 0; i < data.content.length; i++) { if (data.content[i].type === 'text') { raw = data.content[i].text; break; } }
+    for (var i = 0; i < rdata.content.length; i++) { if (rdata.content[i].type === 'text') { raw = rdata.content[i].text; break; } }
     var inv = JSON.parse(raw.replace(/```json/g,'').replace(/```/g,'').trim());
 
-    step(2, 'done', 'Got details - ' + inv.company);
-    step(3, 'active', 'Updating Trade Register...');
+    setstep(2,'done','Data extracted - ' + inv.company);
+    setstep(3,'actv','Saving to Invoices sheet...');
 
     var payload = {
-      action: 'upsert_trade',
-      trade: inv.trade,
-      company: inv.company,
-      contact: inv.contact || '',
-      phone: inv.phone || '',
-      email: inv.email || '',
-      status: 'Quote Received',
       date: inv.invoice_date || '',
+      company: inv.company || '',
+      trade: inv.trade || '',
+      invoice_number: inv.invoice_number || '',
+      invoice_type: inv.invoice_type || '',
       amount_ex_gst: inv.amount_ex_gst || 0,
       gst_amount: inv.gst_amount || 0,
       amount_inc_gst: inv.amount_inc_gst || 0,
-      invoice_number: inv.invoice_number || '',
-      invoice_type: inv.invoice_type || '',
+      due_date: inv.due_date || '',
       description: inv.description || '',
-      notes: inv.notes || ''
+      notes: inv.notes || '',
+      added_on: new Date().toLocaleDateString('en-AU')
     };
 
-    var sr = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    var sr = await fetch(SURL, { method: 'POST', body: JSON.stringify(payload) });
     var result = await sr.json();
     if (result.status !== 'success') throw new Error(result.message || 'Sheet error');
 
-    step(3, 'done', result.message || 'Done');
+    setstep(3,'done','Saved to Google Sheet');
 
     setTimeout(function() {
-      hide('progress-card');
+      hide('prog-card');
       show('ok-card');
-      document.getElementById('ok-msg').textContent = result.message || 'Trade Register updated';
-      document.getElementById('trade-tag').textContent = inv.trade + ' - ' + inv.company;
       document.getElementById('r-total').textContent = fmt(inv.amount_inc_gst);
       document.getElementById('r-type').textContent = inv.invoice_type || '-';
-      var items = [['Company', inv.company], ['Phone', inv.phone || '-'], ['Email', inv.email || '-'], ['Invoice', inv.invoice_number || '-'], ['Ex GST', fmt(inv.amount_ex_gst)], ['GST', fmt(inv.gst_amount)]];
-      document.getElementById('r-grid').innerHTML = items.map(function(x) { return '<div><div class="gl">' + x[0] + '</div><div class="gv">' + (x[1] || '-') + '</div></div>'; }).join('');
+      var items = [['Company',inv.company],['Trade',inv.trade],['Invoice',inv.invoice_number||'-'],['Date',inv.invoice_date||'-'],['Ex GST',fmt(inv.amount_ex_gst)],['GST',fmt(inv.gst_amount)]];
+      document.getElementById('r-grid').innerHTML = items.map(function(x){ return '<div><div class="gl">'+x[0]+'</div><div class="gv">'+(x[1]||'-')+'</div></div>'; }).join('');
       if (inv.notes) { var nb = document.getElementById('r-notes'); nb.textContent = 'Notes: ' + inv.notes; nb.classList.remove('hidden'); }
     }, 500);
 
   } catch(e) {
-    hide('progress-card');
+    hide('prog-card');
     show('err-card');
-    document.getElementById('err-msg').textContent = 'Error: ' + e.message;
+    document.getElementById('errmsg').textContent = 'Error: ' + e.message;
   }
 }
 
 function reset() {
-  currentFile = null;
-  document.getElementById('drop-title').textContent = 'Drop PDF here';
-  document.getElementById('drop-sub').textContent = 'or tap to browse';
-  document.getElementById('go-btn').disabled = true;
-  document.getElementById('file-input').value = '';
+  file = null;
+  document.getElementById('dtitle').textContent = 'Drop PDF here';
+  document.getElementById('dsub').textContent = 'or tap to browse';
+  document.getElementById('gobtn').disabled = true;
+  document.getElementById('finput').value = '';
   document.getElementById('r-notes').classList.add('hidden');
-  step(1, 'pending', 'Reading PDF with Claude');
-  step(2, 'pending', 'Extracting trade and contact details');
-  step(3, 'pending', 'Updating Trade Register');
-  hide('ok-card'); hide('err-card'); hide('progress-card');
+  setstep(1,'pend','Reading PDF with Claude');
+  setstep(2,'pend','Extracting invoice data');
+  setstep(3,'pend','Saving to Invoices sheet');
+  hide('ok-card'); hide('err-card'); hide('prog-card');
   show('upload-card');
 }
 </script>
